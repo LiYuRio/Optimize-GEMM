@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "gemm/utils.h"
 #include "gemm/gemm_impls.h"
 using namespace std;
@@ -7,6 +8,8 @@ int main() {
   int p, m, n, k, lda, ldb, ldc;
   double gflops, duration_time, start_time;
   float *a, *b, *c, *cold, *cref;
+  ofstream out;
+  out.open("output.dat");
   for (p = PFIRST; p <= PLAST; p += PINC) {
     m = (M == -1 ? p : M);
     n = (N == -1 ? p : N);
@@ -33,6 +36,7 @@ int main() {
 
     cout << "Reference: m = n = k = " << p << ", Gflops = " << gflops / duration_time << "."
          << endl;
+    out << m << " " << gflops / duration_time << endl; 
 
     delete a;
     delete b;
@@ -40,4 +44,5 @@ int main() {
     delete cold;
     delete cref;
   }
+  out.close();
 }
