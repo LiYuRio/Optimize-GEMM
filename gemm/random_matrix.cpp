@@ -3,7 +3,7 @@
 
 #include "gemm/utils.h"
 
-#define A(i, j) a[(j)*lda + (i)]
+#define A(i, j) a[(i)*lda + (j)]
 
 void random_uniform_matrix(int m, int n, float *a, int lda, int l, int r) {
   int random_seed = std::random_device{}();
