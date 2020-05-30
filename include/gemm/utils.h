@@ -17,3 +17,4 @@
 
 void random_uniform_matrix(int m, int n, float *a, int lda, int l, int r);
 double timer();
+double compare_matrices(int m, int n, float *a, int lda, float *b, int ldb );

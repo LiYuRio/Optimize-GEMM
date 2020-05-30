@@ -5,8 +5,10 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 add_library(GEMM STATIC
   gemm/reference_gemm.cpp
+  gemm/optimize_gemm_v0.cpp
   gemm/random_matrix.cpp
   gemm/timer.cpp
+  gemm/compare_matrices.cpp
 )
 
 target_include_directories(GEMM

@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
   int p, m, n, k, lda, ldb, ldc;
-  double gflops, duration_time, start_time;
+  double gflops, duration_time, start_time, diff, ref_performance;
   float *a, *b, *c, *cold, *cref;
   ofstream out;
   out.open("output.dat");
@@ -30,13 +30,20 @@ int main() {
     random_uniform_matrix(m, k, a, lda, LB, RB);
     random_uniform_matrix(k, n, b, ldb, LB, RB);
     random_uniform_matrix(m, n, cold, ldc, LB, RB);
-    start_time = timer();
-    reference_sgemm(m, n, k, a, lda, b, ldb, c, ldc);
-    duration_time = timer() - start_time;
 
-    cout << "Reference: m = n = k = " << p << ", Gflops = " << gflops / duration_time << "."
-         << endl;
-    out << m << " " << gflops / duration_time << endl; 
+    start_time = timer();
+    reference_sgemm(m, n, k, a, lda, b, ldb, cref, ldc);
+    duration_time = timer() - start_time;
+    ref_performance = gflops / duration_time; 
+
+    start_time = timer();
+    optimize_sgemm_v0(m, n, k, a, lda, b, ldb, c, ldc);
+    duration_time = timer() - start_time;
+    diff = compare_matrices(m, n, cref, ldc, c, ldc);
+    cout << "Optimize: m = n = k = " << p
+         << ", Gflops = " << gflops / duration_time << " with diff = " << diff
+         << "." << endl;
+    out << m << " " << ref_performance << " " << gflops / duration_time << endl;
 
     delete a;
     delete b;
